@@ -1,6 +1,6 @@
 # PVOutput uploader extension #
 
-A [weeWX](http://weewx.com/ "WeeWX - Open source software for your weather station") RESTful service to upload solar PV power generation data to [PVOutput](http://pvoutput.org/ "PVOutput.org").
+A [WeeWX](http://weewx.com/ "WeeWX - Open source software for your weather station") RESTful service to upload solar PV power generation data to [PVOutput](http://pvoutput.org/ "PVOutput.org").
 
 
 ## Description ##
@@ -15,28 +15,28 @@ The *PVOutput uploader* extension consists of:
 
 The *PVOutput uploader* extension requires:
 
-- weeWX v3.7.0 or greater
+- WeeWX v3.7.0 or greater
 - a PVOutput account with system ID and API access key
-- a weeWX system using a weeWX archive to record solar PV power generation data using the [Aurora driver](https://github.com/gjr80/weewx-pvoutput/tree/master/driver) custom schema
+- a WeeWX system using a WeeWX archive to record solar PV power generation data using the [Aurora driver](https://github.com/gjr80/weewx-pvoutput/tree/master/driver) custom schema
 
 ## Installation ##
 
 The *PVOutput uploader* extension can be installed manually or automatically using the [*wee_extension* utility](http://weewx.com/docs/utilities.htm#wee_extension_utility). The preferred method of installation is through the use of *wee_extension*.
 
-**Note:** Symbolic names are used below to refer to some file location on the weeWX system. These symbolic names allow a common name to be used to refer to a directory that may be different from system to system. The following symbolic names are used below:
+**Note:** Symbolic names are used below to refer to some file location on the WeeWX system. These symbolic names allow a common name to be used to refer to a directory that may be different from system to system. The following symbolic names are used below:
 
 -   *$DOWNLOAD_ROOT*. The path to the directory containing the downloaded *PVOutput uploader* extension.
--   *$BIN_ROOT*. The path to the directory where weeWX executables are located. This directory varies depending on weeWX installation method. Refer to [where to find things](http://weewx.com/docs/usersguide.htm#Where_to_find_things "where to find things") in the [weeWX User's Guide](http://weewx.com/docs/usersguide.htm "User's Guide to the weeWX Weather System") for further information.
+-   *$BIN_ROOT*. The path to the directory where WeeWX executables are located. This directory varies depending on WeeWX installation method. Refer to [where to find things](http://weewx.com/docs/usersguide.htm#Where_to_find_things "where to find things") in the [WeeWX User's Guide](http://weewx.com/docs/usersguide.htm "User's Guide to the WeeWX Weather System") for further information.
 
 ### Installation using the wee_extension utility ###
 
-1.  Download the latest *PVOutput uploader* extension from the *PVOutput uploader* extension [releases page](https://github.com/gjr80/weewx-pvoutput/releases) into a directory accessible from the weeWX machine.
+1.  Download the latest *PVOutput uploader* extension from the *PVOutput uploader* extension [releases page](https://github.com/gjr80/weewx-pvoutput/releases) into a directory accessible from the WeeWX machine.
 
-        $ wget -P $DOWNLOAD_ROOT https://github.com/gjr80/weewx-pvoutput/releases/download/v0.3.1/pvoutput-0.3.1.tar.gz
+        $ wget -P $DOWNLOAD_ROOT https://github.com/gjr80/weewx-pvoutput/releases/download/v0.4.1/pvoutput-0.4.1.tar.gz
 
     where *$DOWNLOAD_ROOT* is the path to the directory where the *PVOutput uploader* extension is to be downloaded.
 
-1.  Stop weeWX:
+1.  Stop WeeWX:
 
         $ sudo /etc/init.d/weewx stop
 
@@ -46,15 +46,15 @@ The *PVOutput uploader* extension can be installed manually or automatically usi
 
 1.  Install the *PVOutput uploader* extension downloaded at step 1 using the *wee_extension* utility:
 
-        $ wee_extension --install=$DOWNLOAD_ROOT/pvoutput-0.3.1.tar.gz
+        $ wee_extension --install=$DOWNLOAD_ROOT/pvoutput-0.4.1.tar.gz
 
     This will result in output similar to the following:
 
-        Request to install '/var/tmp/pvoutput-0.3.1.tar.gz'
-        Extracting from tar archive /var/tmp/pvoutput-0.3.1.tar.gz
+        Request to install '/var/tmp/pvoutput-0.4.1.tar.gz'
+        Extracting from tar archive /var/tmp/pvoutput-0.4.1.tar.gz
         Saving installer file to /home/weewx/bin/user/installer/Aurora
         Saved configuration dictionary. Backup copy at /home/weewx/weewx.conf.20180201124410
-        Finished installing extension '/var/tmp/pvoutput-0.3.1.tar.gz'
+        Finished installing extension '/var/tmp/pvoutput-0.4.1.tar.gz'
 
 1.  Edit *weewx.conf*:
 
@@ -75,7 +75,7 @@ The *PVOutput uploader* extension can be installed manually or automatically usi
 
 1.  Save *weewx.conf*.
 
-1.  Start weeWX:
+1.  Start WeeWX:
 
         $ sudo /etc/init.d/weewx start
 
@@ -83,17 +83,17 @@ The *PVOutput uploader* extension can be installed manually or automatically usi
 
         $ sudo service weewx start
 
-1.  The weeWX log should be monitored to verify data is being posted to PVOutput at the end of each archive period. Setting *debug = 1* or *debug = 2* in *weewx.conf* will provide additional information in the log. Using *debug = 2* will generate significant amounts of log output and should only be used for verification of operation or testing.
+1.  The WeeWX log should be monitored to verify data is being posted to PVOutput at the end of each archive period. Setting *debug = 1* or *debug = 2* in *weewx.conf* will provide additional information in the log. Using *debug = 2* will generate significant amounts of log output and should only be used for verification of operation or testing.
 
 ### Manual installation ###
 
-1.  Download the latest *PVOutput uploader* extension from the *PVOutput uploader* extension [releases page](https://github.com/gjr80/weewx-pvoutput/releases) into a directory accessible from the weeWX machine.
+1.  Download the latest *PVOutput uploader* extension from the *PVOutput uploader* extension [releases page](https://github.com/gjr80/weewx-pvoutput/releases) into a directory accessible from the WeeWX machine.
 
-        $ wget -P $DOWNLOAD_ROOT https://github.com/gjr80/weewx-pvoutput/releases/download/v0.3.1/pvoutput-0.3.1.tar.gz
+        $ wget -P $DOWNLOAD_ROOT https://github.com/gjr80/weewx-pvoutput/releases/download/v0.4.1/pvoutput-0.4.1.tar.gz
 
     where *$DOWNLOAD_ROOT* is the path to the directory where the *PVOutput uploader* extension is to be downloaded.
 
-1.  Stop weeWX:
+1.  Stop WeeWX:
 
         $ sudo /etc/init.d/weewx stop
 
@@ -103,7 +103,7 @@ The *PVOutput uploader* extension can be installed manually or automatically usi
 
 1.  Unpack the extension as follows:
 
-        $ tar xvfz pvoutput-0.3.1.tar.gz
+        $ tar xvfz pvoutput-0.4.1.tar.gz
 
 1.  Copy files from within the resulting directory as follows:
 
@@ -135,7 +135,7 @@ The *PVOutput uploader* extension can be installed manually or automatically usi
 
 1.  Save *weewx.conf*.
 
-1.  Start weeWX:
+1.  Start WeeWX:
 
         $ sudo /etc/init.d/weewx start
 
@@ -143,7 +143,7 @@ The *PVOutput uploader* extension can be installed manually or automatically usi
 
         $ sudo service weewx start
 
-1.  The weeWX log should be monitored to verify data is being posted to PVOutput at the end of each archive period. Setting *debug = 1* or *debug = 2* in *weewx.conf* will provide additional information in the log. Using *debug = 2* will generate significant amounts of log output and should only be used for verification of operation or testing.
+1.  The WeeWX log should be monitored to verify data is being posted to PVOutput at the end of each archive period. Setting *debug = 1* or *debug = 2* in *weewx.conf* will provide additional information in the log. Using *debug = 2* will generate significant amounts of log output and should only be used for verification of operation or testing.
 
 ## Support ##
 
