@@ -15,7 +15,7 @@ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
-this program.  If not, see http://www.gnu.org/licenses/.
+this program.  If not, see https://www.gnu.org/licenses/.
 
 Version: 0.4.1                                      Date: 18 August 2022
 
@@ -252,6 +252,9 @@ class PVOutputThread(weewx.restx.RESTThread):
             else:
                 self.max_batch_size = 30
                 self.update_period = 14
+        # property to hold the timestamp of the last successful post to
+        # PVOutput.org
+        self.last_post = None
         # now summarize what we are doing in a few log entries
         log.debug("server url=%s" % self.server_url)
         log.debug("cumulative_energy=%s net=%s net_delay=%d tariffs=%s" % (self.cumulative,
@@ -265,7 +268,7 @@ class PVOutputThread(weewx.restx.RESTThread):
         """Add a status to the system.
 
         Input:
-            record:     A weewx archive record containing the data to be added.
+            record:     A WeeWX archive record containing the data to be added.
                         Dictionary.
             cumulative: Set if energy field passed is lifetime cumulative
                         rather than a daytime cumulative. Boolean, default
@@ -365,12 +368,12 @@ class PVOutputThread(weewx.restx.RESTThread):
 
         PVOutput requires 'energy' in each status record to be a cumulative
         value (either day or lifetime). Cumulative values are not normally
-        included in a weewx record/packet so we need to calculate the data
+        included in a WeeWX record/packet, so we need to calculate the data
         from the archive. In this case we will use the day cumulative total.
-        Returns results in the same units as the record.
+        Results are returned using the same units as the record.
 
         Input:
-            record:    A weewx archive record containing the data to be added.
+            record:    A WeeWX archive record containing the data to be added.
                        Dictionary.
             dbmanager: Manager object for the database being used. Object.
         Returns:
@@ -572,16 +575,17 @@ class PVOutputThread(weewx.restx.RESTThread):
             _earliest_ts = time.mktime(_earliest_dt.timetuple())
             if time_ts < _earliest_ts:
                 how_old = (now_dt - datetime.datetime.fromtimestamp(time_ts)).days
-                log.debug("%s: record %s is older than PVOutput imposed limits (%d > %d)." % (self.protocol_name,
-                                                                                              timestamp_to_string(time_ts),
-                                                                                              how_old,
-                                                                                              self.self.update_period))
+                log.debug("%s: record %s is older than PVOutput "
+                          "imposed limits (%d > %d)." % (self.protocol_name,
+                                                         timestamp_to_string(time_ts),
+                                                         how_old,
+                                                         self.self.update_period))
                 return True
 
         # if we have a minimum interval between posts then don't post if that
         # interval has not passed
         if self.post_interval is not None:
-            how_long = time_ts - self.lastpost
+            how_long = time_ts - self.last_post
             if how_long < self.post_interval:
                 log.debug("%s: wait interval (%d < %d) has not passed for record %s" % (self.protocol_name,
                                                                                         how_long,
@@ -589,7 +593,7 @@ class PVOutputThread(weewx.restx.RESTThread):
                                                                                         timestamp_to_string(time_ts)))
                 return True
 
-        self.lastpost = time_ts
+        self.last_post = time_ts
         return False
 
 
@@ -623,7 +627,7 @@ class PVOutputAPI(object):
                       }
 
     def __init__(self, **kwargs):
-        """"Initialise the PVOutputAPI object."""
+        """Initialise the PVOutputAPI object."""
 
         self.sid = kwargs.get('sid')
         self.api_key = kwargs.get('api_key')
@@ -778,7 +782,7 @@ class PVOutputAPI(object):
         """Add a status to the system.
 
         Input:
-            record:     A weewx archive record containing the data to be added.
+            record:     A WeeWX archive record containing the data to be added.
             cumulative: Set if energy field passed is lifetime cumulative
                         (rather than daytime cumulative). Boolean, default
                         False.
@@ -843,7 +847,7 @@ class PVOutputAPI(object):
         Input:
             records:    A list of WeeWX archive record containing the data to
                         be added.
-            cumulative: Set if energey field passed is lifetime cumulative
+            cumulative: Set if energy field passed is lifetime cumulative
                         (rather than daytime cumulative). Boolean, default
                         False.
         Returns:
@@ -884,7 +888,7 @@ class PVOutputAPI(object):
             # stripping off any right hand repeated commas then add the string
             # to our 'data' list
             _data_list.append(','.join(_param_list).rstrip(','))
-        # convert the data list to a string of semi-colon separated individual
+        # convert the data list to a string of semicolon separated individual
         # status parameter strings
         _data_str = ';'.join(_data_list)
 
