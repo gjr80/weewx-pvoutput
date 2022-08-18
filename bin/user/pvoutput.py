@@ -237,14 +237,21 @@ class PVOutputThread(weewx.restx.RESTThread):
         # Donors to PVOutput receive benefits such as the ability to upload
         # larger batches of status data and being able to add older historical
         # status data. Check to see if this system ID is a donor or not and set
-        # the appropriate limits.
-        system = self.getsystem(donations=1)
-        if system[0]['donations'] == '1':
-            self.max_batch_size = 100
-            self.update_period = 90
-        else:
+        # the appropriate limits. Wrap in a try..except in case PVOutput.org
+        # does not respond.
+        try:
+            system = self.getsystem(donations=1)
+        except weewx.restx.FailedPost:
+            # we could not contact the pvoutput.org API
             self.max_batch_size = 30
             self.update_period = 14
+        else:
+            if system[0]['donations'] == '1':
+                self.max_batch_size = 100
+                self.update_period = 90
+            else:
+                self.max_batch_size = 30
+                self.update_period = 14
         # now summarize what we are doing in a few log entries
         log.debug("server url=%s" % self.server_url)
         log.debug("cumulative_energy=%s net=%s net_delay=%d tariffs=%s" % (self.cumulative,
