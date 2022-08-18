@@ -210,7 +210,7 @@ class PVOutputThread(weewx.restx.RESTThread):
             api_key:    The PVOutput allocated key used to update a given
                         system's data on PVOutput.
 
-            server_url: The base URL for the PVOuputr API server.
+            server_url: The base URL for the PVOutput API server.
         """
 
         # initialize my superclass:
