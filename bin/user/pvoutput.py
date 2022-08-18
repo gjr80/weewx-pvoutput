@@ -3,7 +3,7 @@ pvoutput.py
 
 A WeeWX RESTful service to upload PV data to PVOutput.
 
-Copyright (C) 2016 Gary Roderick                  gjroderick<at>gmail.com
+Copyright (C) 2016-22 Gary Roderick               gjroderick<at>gmail.com
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -17,11 +17,16 @@ PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program.  If not, see http://www.gnu.org/licenses/.
 
-Version: 0.4.0a1                                    Date: 8 March 2020
+Version: 0.4.1                                      Date: 18 August 2022
 
 Revision History
+    18 August 2022      v0.4.1
+        - fix issue that prevents WeeWX startup if PVOutput.org API cannot be
+          contacted
     8 March 2020        v0.4.0
         - now WeeWX 4.0 python2/3 compatible
+    3 February 2018     v0.3.1
+        - updated install comments
     1 February 2018     v0.3.0
         - release as a WeeWX extension
     24 February 2017    v0.2.3
