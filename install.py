@@ -11,9 +11,12 @@ details.
 
                  Installer for PVOutput Uploader extension
 
-Version: 0.4.1                                        Date: 18 August 2022
+Version: 0.5.0a1                                      Date: 28 November 2023
 
 Revision History
+    28 November 2023    v0.5.0
+        - now WeeWX v5 compatible
+        - python v3.6 and earlier no longer supported
     18 August 2022      v0.4.1
         - installer config is now presented as a triple quote string
         - minor formatting changes
@@ -27,21 +30,18 @@ Revision History
 
 # python imports
 import configobj
-
 from distutils.version import StrictVersion
-from setup import ExtensionInstaller
-
-# import StringIO, use six.moves due to python2/python3 differences
-from six.moves import StringIO
+from io import StringIO
 
 # WeeWX imports
 import weewx
+from setup import ExtensionInstaller
 
 
-REQUIRED_VERSION = "3.7.0"
-PVOUTPUT_VERSION = "0.4.1"
+REQUIRED_VERSION = "5.0.0b15"
+UPLOADER_VERSION = "0.5.0a1"
 # define our config as a multiline string so we can preserve comments
-pvoutput_config = """
+pvoutput_config_str = """
 [StdRESTful]
 
     [[PVOutput]]
@@ -58,7 +58,7 @@ pvoutput_config = """
 """
 
 # construct our config dict
-pvoutput_dict = configobj.ConfigObj(StringIO(pvoutput_config))
+pvoutput_config = configobj.ConfigObj(StringIO(pvoutput_config_str))
 
 
 def loader():
@@ -68,17 +68,17 @@ def loader():
 class PVOutputInstaller(ExtensionInstaller):
     def __init__(self):
         if StrictVersion(weewx.__version__) < StrictVersion(REQUIRED_VERSION):
-            msg = "%s requires WeeWX %s or greater, found %s" % ('PVOutput ' + PVOUTPUT_VERSION,
+            msg = "%s requires WeeWX %s or greater, found %s" % ('PVOutput ' + UPLOADER_VERSION,
                                                                  REQUIRED_VERSION,
                                                                  weewx.__version__)
             raise weewx.UnsupportedFeature(msg)
         super(PVOutputInstaller, self).__init__(
-            version=PVOUTPUT_VERSION,
+            version=UPLOADER_VERSION,
             name='PVOutput',
             description='WeeWX RESTful service for uploading data to PVOutput.org.',
             author="Gary Roderick",
             author_email="gjroderick@gmail.com",
             restful_services=['user.pvoutput.StdPVOutput'],
-            config=pvoutput_dict,
+            config=pvoutput_config,
             files=[('bin/user', ['bin/user/pvoutput.py'])]
         )
