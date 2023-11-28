@@ -3,7 +3,7 @@ pvoutput.py
 
 A WeeWX RESTful service to upload PV data to PVOutput.
 
-Copyright (C) 2016-22 Gary Roderick               gjroderick<at>gmail.com
+Copyright (C) 2016-23 Gary Roderick               gjroderick<at>gmail.com
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +17,7 @@ PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program.  If not, see https://www.gnu.org/licenses/.
 
-Version: 0.5.0a1                                    Date: 18 August 2022
+Version: 0.5.0a1                                    Date: 28 November 2023
 
 Revision History
     28 November 2023    v0.5.0
@@ -138,7 +138,6 @@ UPLOADER_VERSION = '0.5.0a1'
 #                            class StdPVOutput
 # ============================================================================
 
-
 class StdPVOutput(weewx.restx.StdRESTful):
     """Specialised RESTful class for PVOutput."""
 
@@ -195,21 +194,29 @@ class StdPVOutput(weewx.restx.StdRESTful):
 #                           class PVOutputThread
 # ============================================================================
 
-
 class PVOutputThread(weewx.restx.RESTThread):
     """Class for threads posting to PVOutput using the PVIOutput API."""
 
     # PVOutput API scripts that we know about
-    SERVICE_SCRIPT = {'addstatus': '/service/r2/addstatus.jsp',
+    service_script = {'addstatus': '/service/r2/addstatus.jsp',
                       'getsystem': '/service/r2/getsystem.jsp'
                       }
 
     def __init__(self, queue, manager_dict, system_id, api_key, server_url,
-                 protocol_name="Unknown-RESTful", post_interval=None,
-                 max_backlog=sys.maxsize, stale=None, log_success=True,
-                 log_failure=True, timeout=5, max_tries=3, retry_wait=2,
-                 skip_upload=False, cumulative_energy=False, net=False,
-                 net_delay=0, tariffs=False):
+                 protocol_name="Unknown-RESTful",
+                 post_interval=None,
+                 max_backlog=sys.maxsize,
+                 stale=None,
+                 log_success=True,
+                 log_failure=True,
+                 timeout=5,
+                 max_tries=3,
+                 retry_wait=2,
+                 skip_upload=False,
+                 cumulative_energy=False,
+                 net=False,
+                 net_delay=0,
+                 tariffs=False):
 
         """Initializer for the PVOutputThread class.
 
@@ -355,7 +362,7 @@ class PVOutputThread(weewx.restx.RESTThread):
                 params[api_field] = _metric_rec[rec_field]
 
         # get the url to be used
-        url = self.server_url + self.SERVICE_SCRIPT['addstatus']
+        url = self.server_url + self.service_script['addstatus']
         # create a Request object
         _request = urllib.request.Request(url=url)
         # if debug >= 2 then log some details of our request
@@ -534,7 +541,7 @@ class PVOutputThread(weewx.restx.RESTThread):
             getsystem_fields.append(extended)
 
         # get the url to be used
-        url = self.server_url + self.SERVICE_SCRIPT['getsystem']
+        url = self.server_url + self.service_script['getsystem']
         # create a Request object
         _request = urllib.request.Request(url=url)
         # if debug >= 2 then log some details of our request
@@ -611,7 +618,6 @@ class PVOutputThread(weewx.restx.RESTThread):
 #                  error classes used by class PVOutputAPI
 # ============================================================================
 
-
 class PVUploadError(Exception):
     """Raised when data to PV Output does not upload correctly."""
 
@@ -624,11 +630,10 @@ class HTTPResponseError(Exception):
 #                            class PVOutputAPI
 # ============================================================================
 
-
 class PVOutputAPI(object):
     """Class to interact with PVOutput API."""
 
-    SERVICE_SCRIPT = {'addstatus': '/service/r2/addstatus.jsp',
+    service_script = {'addstatus': '/service/r2/addstatus.jsp',
                       'addbatchstatus': '/service/r2/addbatchstatus.jsp',
                       'getstatus': '/service/r2/getstatus.jsp',
                       'deletestatus': '/service/r2/deletestatus.jsp',
@@ -660,7 +665,7 @@ class PVOutputAPI(object):
 
         Inputs:
             service_script: Path and script name of a PVOutput service.
-                            Normally a value from the SERVICE_SCRIPT dict.
+                            Normally a value from the service_script dict.
             data:           The data payload to be sent with the request.
 
         Returns:
@@ -697,8 +702,8 @@ class PVOutputAPI(object):
                 # to the server. Log the error and continue.
                 if hasattr(e, 'reason'):
                     print("Failed to reach a server. Reason: %s" % e.reason)
-                # If we have a code we did get to the server but it returned an
-                # error. Log the error and continue.
+                # If we have a code we did get to the server, but it returned
+                # an error. Log the error and continue.
                 if hasattr(e, 'code'):
                     print("The server returned an error. Error code: %s" % e.code)
             time.sleep(self.retry_wait)
@@ -780,7 +785,7 @@ class PVOutputAPI(object):
                 params[getstatus_params[var]] = data
 
         # submit the request to the API
-        decoded_response = self.request_with_retries(self.SERVICE_SCRIPT['getstatus'],
+        decoded_response = self.request_with_retries(self.service_script['getstatus'],
                                                      params)
         # return our result as a list of dicts
         if params['h'] == 1:
@@ -844,7 +849,7 @@ class PVOutputAPI(object):
 
         # submit the request to the API and return the response
         try:
-            return self.request_with_retries(self.SERVICE_SCRIPT['addstatus'],
+            return self.request_with_retries(self.service_script['addstatus'],
                                              params)
         except HTTPResponseError as e:
             # log the error
@@ -909,7 +914,7 @@ class PVOutputAPI(object):
             params['c1'] = 1
 
         # submit the request to the API
-        response = self.request_with_retries(self.SERVICE_SCRIPT['addbatchstatus'],
+        response = self.request_with_retries(self.service_script['addbatchstatus'],
                                              params)
 
         # Check any response. request_with_retires() took care of whether
@@ -957,7 +962,7 @@ class PVOutputAPI(object):
         params['d'] = time.strftime("%Y%m%d", time_tt)
         params['t'] = time.strftime("%H:%M", time_tt)
         # submit the request
-        return self.request_with_retries(self.SERVICE_SCRIPT['deletestatus'],
+        return self.request_with_retries(self.service_script['deletestatus'],
                                          params)
 
     def getsystem(self, secondary_array=0, tariffs=0, teams=0,
@@ -1001,7 +1006,7 @@ class PVOutputAPI(object):
             getsystem_fields.append(extended)
 
         # submit the request to the API
-        decoded_response = self.request_with_retries(self.SERVICE_SCRIPT['getsystem'],
+        decoded_response = self.request_with_retries(self.service_script['getsystem'],
                                                      params)
         # return a list of dicts
         return _to_dict(decoded_response, getsystem_fields, single_dict=True)
@@ -1020,13 +1025,13 @@ class PVOutputAPI(object):
         for var, data in kwargs.items():
             if var in getoutput_params and data is not None:
                 params[getoutput_params[var]] = data
-        return self.request_with_retries(self.SERVICE_SCRIPT['getoutput'],
+        return self.request_with_retries(self.service_script['getoutput'],
                                          params)
+
 
 # ============================================================================
 #                            Utility Functions
 # ============================================================================
-
 
 def _to_dict(data, fields, single_dict=False):
     """Parse PVOutput API csv output."""
