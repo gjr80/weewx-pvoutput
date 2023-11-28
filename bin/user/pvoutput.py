@@ -17,9 +17,12 @@ PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program.  If not, see https://www.gnu.org/licenses/.
 
-Version: 0.4.1                                      Date: 18 August 2022
+Version: 0.5.0a1                                    Date: 18 August 2022
 
 Revision History
+    28 November 2023    v0.5.0
+        - now WeeWX v5 compatible
+        - python v3.6 and earlier no longer supported
     18 August 2022      v0.4.1
         - fix issue that prevents WeeWX startup if PVOutput.org API cannot be
           contacted
@@ -126,6 +129,10 @@ from weeutil.weeutil import timestamp_to_string, startOfDay
 # get a logger object
 log = logging.getLogger(__name__)
 
+# our name and version number
+UPLOADER_NAME = 'PVOutput'
+UPLOADER_VERSION = '0.5.0a1'
+
 
 # ============================================================================
 #                            class StdPVOutput
@@ -168,6 +175,9 @@ class StdPVOutput(weewx.restx.StdRESTful):
         self.archive_thread.start()
         # bind to NEW_ARCHIVE_RECORD event
         self.bind(weewx.NEW_ARCHIVE_RECORD, self.new_archive_record)
+        # log our version
+        log.info("%s uploader version %s" % (UPLOADER_NAME, UPLOADER_VERSION))
+        # log what we will do
         log.info("%s: Data for system ID %s will be posted" % (StdPVOutput.protocol_name,
                                                                _pvoutput_dict['system_id']))
 
