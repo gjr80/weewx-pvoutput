@@ -51,7 +51,7 @@ Revision History
 Classes StdPVOutput and PVOutputThread are used as a WeeWX RESTful service to
 post data to PVOutput.org.
 
-Class PVOuputAPI provides the ability to add, update, read and delete system
+Class PVOutputAPI provides the ability to add, update, read and delete system
 data on PVOutput.org via the PVOutput API.
 
 Pre-requisites:
@@ -107,15 +107,15 @@ To use:
 
 # Python imports
 import datetime
+import http.client
 import logging
+import queue
 import socket
 import sys
 import time
-
-# Python 2/3 compatibility shims
-from six.moves import queue
-from six.moves import urllib
-from six.moves import http_client
+import urllib.error
+import urllib.parse
+import urllib.request
 
 # WeeWX imports
 import weedb
@@ -316,8 +316,8 @@ class PVOutputThread(weewx.restx.RESTThread):
                     # we have one, break so we can process the record
                     break
         else:
-            # if we got here it is becase we have none of the required fields,
-            # raise and AbortedPost exception and restx will skip posting
+            # if we got here it is because we have none of the required fields,
+            # raise and AbortedPost exception and RESTx will skip posting
             raise weewx.restx.AbortedPost()
 
         # convert to metric if necessary
@@ -460,7 +460,7 @@ class PVOutputThread(weewx.restx.RESTThread):
                 # necessary.
                 self.handle_code(response.code, _count+1)
             except (urllib.error.URLError, socket.error,
-                    http_client.BadStatusLine, http_client.IncompleteRead) as e:
+                    http.client.BadStatusLine, http.client.IncompleteRead) as e:
                 # An exception was thrown. By default, log it and try again.
                 # Provide method for derived classes to behave otherwise if
                 # necessary.
