@@ -17,12 +17,13 @@ PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program.  If not, see https://www.gnu.org/licenses/.
 
-Version: 0.5.0a1                                    Date: 28 November 2023
+Version: 0.5.0                                      Date: 20 December 2023
 
 Revision History
-    28 November 2023    v0.5.0
+    20 December 2023    v0.5.0
         - now WeeWX v5 compatible
         - python v3.6 and earlier no longer supported
+        - now uses PVOutput https endpoints
     18 August 2022      v0.4.1
         - fix issue that prevents WeeWX startup if PVOutput.org API cannot be
           contacted
@@ -83,7 +84,8 @@ WeeWX archive:
 
 To use:
 
-1.  Copy this file to /home/weewx/bin/user.
+1.  Copy this file to ~/weewx-data/bin/user
+    (or for WeeWX v4.x /home/weewx/bin/user or /usr/share/weewx/user).
 
 2.  Edit weewx.conf as follows:
 
@@ -94,7 +96,7 @@ To use:
         # This section is for configuring posts to PVOutput.
 
         # If you wish to do this, set the option 'enable' to true,
-        # and specify a station and password.
+        # and specify a system ID and API key.
         enable = true
         system_id = ENTER_PVOUTPUT_SYSTEM_ID_HERE
         api_key = ENTER_PVOUTPUT_API_KEY_HERE
@@ -131,7 +133,7 @@ log = logging.getLogger(__name__)
 
 # our name and version number
 UPLOADER_NAME = 'PVOutput'
-UPLOADER_VERSION = '0.5.0a1'
+UPLOADER_VERSION = '0.5.0'
 
 
 # ============================================================================
