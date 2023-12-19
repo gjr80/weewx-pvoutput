@@ -1,4 +1,4 @@
-PVOutput ploader extension
+PVOutput uploader extension
 
 A WeeWX RESTful service to upload solar PV power generation data to PVOutput.
 
