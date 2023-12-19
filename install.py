@@ -11,7 +11,7 @@ details.
 
                  Installer for PVOutput Uploader extension
 
-Version: 0.5.0a1                                      Date: 28 November 2023
+Version: 0.5.0a1                                      Date: 20 December 2023
 
 Revision History
     28 November 2023    v0.5.0
@@ -38,8 +38,8 @@ import weewx
 from setup import ExtensionInstaller
 
 
-REQUIRED_VERSION = "5.0.0b15"
-UPLOADER_VERSION = "0.5.0a1"
+REQUIRED_VERSION = "4.0.0"
+UPLOADER_VERSION = "0.5.0"
 # define our config as a multiline string so we can preserve comments
 pvoutput_config_str = """
 [StdRESTful]
