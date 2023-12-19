@@ -23,6 +23,7 @@ Revision History
     20 December 2023    v0.5.0
         - now WeeWX v5 compatible
         - python v3.6 and earlier no longer supported
+        - now requires WeeWX v4.0.0 or later
         - now uses PVOutput https endpoints
     18 August 2022      v0.4.1
         - fix issue that prevents WeeWX startup if PVOutput.org API cannot be
