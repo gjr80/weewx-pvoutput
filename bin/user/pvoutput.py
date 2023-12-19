@@ -142,7 +142,7 @@ class StdPVOutput(weewx.restx.StdRESTful):
     """Specialised RESTful class for PVOutput."""
 
     # base url for PVOutput API
-    api_url = 'http://pvoutput.org'
+    api_url = 'https://pvoutput.org'
     # give our protocol a name
     protocol_name = 'PVOutput-API'
 
@@ -646,7 +646,7 @@ class PVOutputAPI(object):
 
         self.sid = kwargs.get('sid')
         self.api_key = kwargs.get('api_key')
-        self.base_url = kwargs.get('base_url', 'http://pvoutput.org')
+        self.base_url = kwargs.get('base_url', 'https://pvoutput.org')
         self.max_tries = kwargs.get('max_tries', 3)
         self.retry_wait = kwargs.get('retry_wait', 2)
         self.timeout = kwargs.get('timeout', 5)
