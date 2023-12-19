@@ -15,7 +15,7 @@ The *PVOutput uploader* extension consists of:
 
 The *PVOutput uploader* extension requires:
 
-- WeeWX v3.7.0 or greater
+- WeeWX v4.0.0 or greater
 - a PVOutput account with system ID and API access key
 - a WeeWX system using a WeeWX archive to record solar PV power generation data using the [Aurora driver](https://github.com/gjr80/weewx-pvoutput/tree/master/driver) custom schema
 
@@ -32,7 +32,7 @@ The *PVOutput uploader* extension can be installed manually or automatically usi
 
 1.  Download the latest *PVOutput uploader* extension from the *PVOutput uploader* extension [releases page](https://github.com/gjr80/weewx-pvoutput/releases) into a directory accessible from the WeeWX machine.
 
-        $ wget -P $DOWNLOAD_ROOT https://github.com/gjr80/weewx-pvoutput/releases/download/v0.4.1/pvoutput-0.4.1.tar.gz
+        $ wget -P $DOWNLOAD_ROOT https://github.com/gjr80/weewx-pvoutput/releases/download/v0.5.0/pvoutput-0.5.0.tar.gz
 
     where *$DOWNLOAD_ROOT* is the path to the directory where the *PVOutput uploader* extension is to be downloaded.
 
@@ -46,15 +46,15 @@ The *PVOutput uploader* extension can be installed manually or automatically usi
 
 1.  Install the *PVOutput uploader* extension downloaded at step 1 using the *wee_extension* utility:
 
-        $ wee_extension --install=$DOWNLOAD_ROOT/pvoutput-0.4.1.tar.gz
+        $ wee_extension --install=$DOWNLOAD_ROOT/pvoutput-0.5.0.tar.gz
 
     This will result in output similar to the following:
 
-        Request to install '/var/tmp/pvoutput-0.4.1.tar.gz'
-        Extracting from tar archive /var/tmp/pvoutput-0.4.1.tar.gz
-        Saving installer file to /home/weewx/bin/user/installer/Aurora
-        Saved configuration dictionary. Backup copy at /home/weewx/weewx.conf.20180201124410
-        Finished installing extension '/var/tmp/pvoutput-0.4.1.tar.gz'
+        Request to install '/var/tmp/pvoutput-0.5.0.tar.gz'
+        Extracting from tar archive /var/tmp/pvoutput-0.5.0.tar.gz
+        Saving installer file to /home/wxusere/weewx-data/bin/user/installer/Aurora
+        Saved configuration dictionary. Backup copy at /home/wxusere/weewx-data/weewx.conf.20231201124410
+        Finished installing extension '/var/tmp/pvoutput-0.5.0.tar.gz'
 
 1.  Edit *weewx.conf*:
 
@@ -63,13 +63,16 @@ The *PVOutput uploader* extension can be installed manually or automatically usi
 1.  In *weewx.conf* under *[StdRESTful]* *[[PVOutput]]* check to ensure the *enable* configuration option is set to *True* and the *system_id* and *api_key* configuration options are set for the PVOutput system and API key to be used:
 
         [[PVOutput]]
-            # This section is for configuring posts to PVOutput.
-
-            # If you wish to do this, set the option 'enable' to true,
-            # and specify a station and password.
-            enable = true
+            # This section is for the PVOutput.org RESTful uploader.
+        
+            # the PVOutput system ID
             system_id = ENTER_PVOUTPUT_SYSTEM_ID_HERE
+        
+            # the PVOutput API key to be used
             api_key = ENTER_PVOUTPUT_API_KEY_HERE
+        
+            # enable the uploader
+            enable = True
 
     **Note:** The *enable* configuration option is set to *False* by default during the *PVOutput uploader* extension installation.
 
@@ -89,7 +92,7 @@ The *PVOutput uploader* extension can be installed manually or automatically usi
 
 1.  Download the latest *PVOutput uploader* extension from the *PVOutput uploader* extension [releases page](https://github.com/gjr80/weewx-pvoutput/releases) into a directory accessible from the WeeWX machine.
 
-        $ wget -P $DOWNLOAD_ROOT https://github.com/gjr80/weewx-pvoutput/releases/download/v0.4.1/pvoutput-0.4.1.tar.gz
+        $ wget -P $DOWNLOAD_ROOT https://github.com/gjr80/weewx-pvoutput/releases/download/v0.5.0/pvoutput-0.5.0.tar.gz
 
     where *$DOWNLOAD_ROOT* is the path to the directory where the *PVOutput uploader* extension is to be downloaded.
 
@@ -103,7 +106,7 @@ The *PVOutput uploader* extension can be installed manually or automatically usi
 
 1.  Unpack the extension as follows:
 
-        $ tar xvfz pvoutput-0.4.1.tar.gz
+        $ tar xvfz pvoutput-0.5.0.tar.gz
 
 1.  Copy files from within the resulting directory as follows:
 
@@ -118,13 +121,16 @@ The *PVOutput uploader* extension can be installed manually or automatically usi
 1.  In *weewx.conf* under *[StdRESTful]* add a *[[PVOutput]]* stanza as follows ensuring the *system_id* and *api_key* configuration options are set for the PVOutput system and API key to be used:
 
         [[PVOutput]]
-            # This section is for configuring posts to PVOutput.
-
-            # If you wish to do this, set the option 'enable' to true,
-            # and specify a station and password.
-            enable = true
+            # This section is for the PVOutput.org RESTful uploader.
+        
+            # the PVOutput system ID
             system_id = ENTER_PVOUTPUT_SYSTEM_ID_HERE
+        
+            # the PVOutput API key to be used
             api_key = ENTER_PVOUTPUT_API_KEY_HERE
+        
+            # enable the uploader
+            enable = True
 
 1.  In *weewx.conf* under *[Services]* add *user.pvoutput.StdPVOutput* to the list of *restful_services*:
 
