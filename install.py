@@ -11,10 +11,12 @@ details.
 
                  Installer for PVOutput Uploader extension
 
-Version: 0.5.0a1                                      Date: 20 December 2023
+Version: 0.5.1                                      Date: 23 January 2024
 
 Revision History
-    28 November 2023    v0.5.0
+    23 January 2024     v0.5.1
+        - remove installer distutils dependency
+    20 December 2023    v0.5.0
         - now WeeWX v5 compatible
         - python v3.6 and earlier no longer supported
     18 August 2022      v0.4.1
@@ -30,7 +32,6 @@ Revision History
 
 # python imports
 import configobj
-from distutils.version import StrictVersion
 from io import StringIO
 
 # WeeWX imports
@@ -38,8 +39,8 @@ import weewx
 from setup import ExtensionInstaller
 
 
-REQUIRED_VERSION = "4.0.0"
-UPLOADER_VERSION = "0.5.0"
+REQUIRED_WEEWX_VERSION = "5.0.0"
+UPLOADER_VERSION = "0.5.1"
 # define our config as a multiline string so we can preserve comments
 pvoutput_config_str = """
 [StdRESTful]
@@ -61,15 +62,40 @@ pvoutput_config_str = """
 pvoutput_config = configobj.ConfigObj(StringIO(pvoutput_config_str))
 
 
+def version_compare(v1, v2):
+    """Basic 'distutils' and 'packaging' free version comparison.
+
+    v1 and v2 are WeeWX version numbers in string format. Works for simple
+    versions only, does not work for version numbers containing 'a', 'b' and
+    'rc', eg '5.0.0rc1' ('a', 'b' and 'rc' versions will always be considered
+    greater than the same non-'a' or 'b' or 'rc' version number,
+    ie '5.0.0b2' > '5.0.0').
+
+    Returns:
+        0 if v1 and v2 are the same
+        -1 if v1 is less than v2
+        +1 if v1 is greater than v2
+    """
+
+    import itertools
+    mash = itertools.zip_longest(v1.split('.'), v2.split('.'), fillvalue='0')
+    for x1, x2 in mash:
+        if x1 > x2:
+            return 1
+        if x1 < x2:
+            return -1
+    return 0
+
+
 def loader():
     return PVOutputInstaller()
 
 
 class PVOutputInstaller(ExtensionInstaller):
     def __init__(self):
-        if StrictVersion(weewx.__version__) < StrictVersion(REQUIRED_VERSION):
+        if version_compare(weewx.__version__, REQUIRED_WEEWX_VERSION) < 0:
             msg = "%s requires WeeWX %s or greater, found %s" % ('PVOutput ' + UPLOADER_VERSION,
-                                                                 REQUIRED_VERSION,
+                                                                 REQUIRED_WEEWX_VERSION,
                                                                  weewx.__version__)
             raise weewx.UnsupportedFeature(msg)
         super(PVOutputInstaller, self).__init__(
