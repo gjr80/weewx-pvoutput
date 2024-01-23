@@ -1,4 +1,4 @@
-PVOutput uploader extension
+PVOutput ploader extension
 
 A WeeWX RESTful service to upload solar PV power generation data to PVOutput.
 
@@ -17,7 +17,7 @@ The PVOutput uploader extension consists of:
 Pre-Requisites
 
 The PVOutput uploader extension requires:
--   WeeWX v4.0.0 or greater
+-   WeeWX v3.7.0 or greater
 -   a PVOutput account with system ID and API access key
 -   a WeeWX system using a WeeWX archive to record solar PV power generation
     data using the Aurora driver custom schema
@@ -49,7 +49,7 @@ Installation using the wee_extension utility
 extension releases page https://github.com/gjr80/weewx-pvoutput/releases into a
 directory accessible from the WeeWX machine.
 
-    $ wget -P $DOWNLOAD_ROOT https://github.com/gjr80/weewx-pvoutput/releases/download/v0.5.0/pvoutput-0.5.0.tar.gz
+    $ wget -P $DOWNLOAD_ROOT https://github.com/gjr80/weewx-pvoutput/releases/download/v0.5.1/pvoutput-0.5.1.tar.gz
 
     where $DOWNLOAD_ROOT is the path to the directory where the PVOutput
     Uploader extension is to be downloaded.
@@ -65,15 +65,15 @@ directory accessible from the WeeWX machine.
 3.  Install the PVOutput uploader extension downloaded at step 1 using the
 wee_extension utility:
 
-    $ wee_extension --install=$DOWNLOAD_ROOT/pvoutput-0.5.0.tar.gz
+    $ wee_extension --install=$DOWNLOAD_ROOT/pvoutput-0.5.1.tar.gz
 
     This will result in output similar to the following:
 
-        Request to install '/var/tmp/pvoutput-0.5.0.tar.gz'
-        Extracting from tar archive /var/tmp/pvoutput-0.5.0.tar.gz
-        Saving installer file to /home/wxuser/weewx-data/bin/user/installer/Aurora
-        Saved configuration dictionary. Backup copy at /home/weewx/weewx.conf.20231201124410
-        Finished installing extension '/var/tmp/pvoutput-0.5.0.tar.gz'
+        Request to install '/var/tmp/pvoutput-0.5.1.tar.gz'
+        Extracting from tar archive /var/tmp/pvoutput-0.5.1.tar.gz
+        Saving installer file to /home/weewx/bin/user/installer/Aurora
+        Saved configuration dictionary. Backup copy at /home/weewx/weewx.conf.20180201124410
+        Finished installing extension '/var/tmp/pvoutput-0.5.1.tar.gz'
 
 4.  Edit weewx.conf and under [StdRESTful] [[PVOutput]] ensuring the enable
 config option is set to True and the system_id and api_key config options
@@ -82,16 +82,13 @@ are set for the PVOutput system and API key to be used:
     $ vi weewx.conf
 
     [[PVOutput]]
-        # This section is for the PVOutput.org RESTful uploader.
+        # This section is for configuring posts to PVOutput.
 
-        # the PVOutput system ID
+        # If you wish to do this, set the option 'enable' to true,
+        # and specify a station and password.
+        enable = true
         system_id = ENTER_PVOUTPUT_SYSTEM_ID_HERE
-
-        # the PVOutput API key to be used
         api_key = ENTER_PVOUTPUT_API_KEY_HERE
-
-        # enable the uploader
-        enable = True
 
     Note: enable is set to false by default during the PVOutput Uploader
           extension installation.
@@ -118,7 +115,7 @@ Manual installation
 extension releases page https://github.com/gjr80/weewx-pvoutput/releases into a
 directory accessible from the WeeWX machine.
 
-    $ wget -P $DOWNLOAD_ROOT https://github.com/gjr80/weewx-pvoutput/releases/download/v0.5.0/pvoutput-0.5.0.tar.gz
+    $ wget -P $DOWNLOAD_ROOT https://github.com/gjr80/weewx-pvoutput/releases/download/v0.5.1/pvoutput-0.5.1.tar.gz
 
     where $DOWNLOAD_ROOT is the path to the directory where the PVOutput
     Uploader extension is to be downloaded.
@@ -133,7 +130,7 @@ directory accessible from the WeeWX machine.
 
 3.  Unpack the extension as follows:
 
-    $ tar xvfz pvoutput-0.5.0.tar.gz
+    $ tar xvfz pvoutput-0.5.1.tar.gz
 
 4.  Copy files from within the resulting folder as follows:
 
@@ -151,16 +148,13 @@ ensuring the system_id and api_key config options are set for the PVOutput
 system and API key to be used:
 
     [[PVOutput]]
-        # This section is for the PVOutput.org RESTful uploader.
+        # This section is for configuring posts to PVOutput.
 
-        # the PVOutput system ID
+        # If you wish to do this, set the option 'enable' to true,
+        # and specify a station and password.
+        enable = true
         system_id = ENTER_PVOUTPUT_SYSTEM_ID_HERE
-
-        # the PVOutput API key to be used
         api_key = ENTER_PVOUTPUT_API_KEY_HERE
-
-        # enable the uploader
-        enable = True
 
 7.  In weewx.conf under [Services] add user.pvoutput.StdPVOutput to the list of
 restful_services:

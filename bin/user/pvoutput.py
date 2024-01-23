@@ -3,7 +3,7 @@ pvoutput.py
 
 A WeeWX RESTful service to upload PV data to PVOutput.
 
-Copyright (C) 2016-23 Gary Roderick               gjroderick<at>gmail.com
+Copyright (C) 2016-24 Gary Roderick               gjroderick<at>gmail.com
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -17,14 +17,14 @@ PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program.  If not, see https://www.gnu.org/licenses/.
 
-Version: 0.5.0                                      Date: 20 December 2023
+Version: 0.5.1                                      Date: 23 January 2024
 
 Revision History
+    23 January 2024     v0.5.1
+        - bump version number only
     20 December 2023    v0.5.0
         - now WeeWX v5 compatible
         - python v3.6 and earlier no longer supported
-        - now requires WeeWX v4.0.0 or later
-        - now uses PVOutput https endpoints
     18 August 2022      v0.4.1
         - fix issue that prevents WeeWX startup if PVOutput.org API cannot be
           contacted
@@ -85,8 +85,7 @@ WeeWX archive:
 
 To use:
 
-1.  Copy this file to ~/weewx-data/bin/user
-    (or for WeeWX v4.x /home/weewx/bin/user or /usr/share/weewx/user).
+1.  Copy this file to /home/weewx/bin/user.
 
 2.  Edit weewx.conf as follows:
 
@@ -97,7 +96,7 @@ To use:
         # This section is for configuring posts to PVOutput.
 
         # If you wish to do this, set the option 'enable' to true,
-        # and specify a system ID and API key.
+        # and specify a station and password.
         enable = true
         system_id = ENTER_PVOUTPUT_SYSTEM_ID_HERE
         api_key = ENTER_PVOUTPUT_API_KEY_HERE
@@ -134,7 +133,7 @@ log = logging.getLogger(__name__)
 
 # our name and version number
 UPLOADER_NAME = 'PVOutput'
-UPLOADER_VERSION = '0.5.0'
+UPLOADER_VERSION = '0.5.1'
 
 
 # ============================================================================
@@ -145,7 +144,7 @@ class StdPVOutput(weewx.restx.StdRESTful):
     """Specialised RESTful class for PVOutput."""
 
     # base url for PVOutput API
-    api_url = 'https://pvoutput.org'
+    api_url = 'http://pvoutput.org'
     # give our protocol a name
     protocol_name = 'PVOutput-API'
 
@@ -649,7 +648,7 @@ class PVOutputAPI(object):
 
         self.sid = kwargs.get('sid')
         self.api_key = kwargs.get('api_key')
-        self.base_url = kwargs.get('base_url', 'https://pvoutput.org')
+        self.base_url = kwargs.get('base_url', 'http://pvoutput.org')
         self.max_tries = kwargs.get('max_tries', 3)
         self.retry_wait = kwargs.get('retry_wait', 2)
         self.timeout = kwargs.get('timeout', 5)
